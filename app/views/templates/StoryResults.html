@@ -1,0 +1,94 @@
+<div class="row">
+<div class="col-md-6">
+<div ng-if="initstory == 'reset' && refinancing.initMortgage.type !== 'fixe'"> 
+<p> 
+	Si les indice ne change pas  pour le prêt actuel
+</p>
+</div>
+
+
+<div ng-if="initstory == 'max' && refinancing.initMortgage.type !== 'fixe'"> 
+<p> 
+	Si les indice atteigne leur maximum pour le prêt actuel  
+</p>
+</div>
+<div ng-if="initstory == 'min' && refinancing.initMortgage.type !== 'fixe'"> 
+<p> 
+	si les indice sont à leur minimum pour le prêt actuel
+</p>
+</div>
+<div ng-if="initstory == 'limit' && refinancing.initMortgage.type !== 'fixe' && refinancing.refIndMaxInit.length>0"> 
+
+	 Sachant que les indices sont actuellement de  {{ refinancing.refIndMaxInit[0]}} les indices doivent atteindre :
+	 <ul ng-repeat= "lim in refinancing.refIndMaxInit | slice:1">
+	  	<li>{{ lim }}</li>
+	  </ul>
+	   
+<p> 
+	
+</p>
+</div>
+<!-- <div ng-if="initstory == 'limit' && refinancing.initMortgage.type !== 'fixe' && refinancing.refIndMaxInit.length<=1 && refinancing.refIndMaxRef.length<=1"> 
+	<p>Avec une Hausse ou une baisse des taux <strong>à la date de la prochaine révision du PRET ACTUEL</strong>, le refinancement n'est jamais avantageux!</p> 
+
+	   
+<p> 
+	
+</p>
+</div> -->
+	
+</div>
+
+<div class="col-md-6">
+	
+
+
+<div ng-if="refstory == 'reset' && refinancing.refMortgage.type !== 'fixe'"> 
+<p> 
+	Si les indice ne change pas pour le rachat
+</p>
+</div>
+
+
+<div ng-if="refstory == 'max' && refinancing.refMortgage.type !== 'fixe'"> 
+<p> 
+	Si les indice atteigne leur maximum pour  le rachat
+</p>
+</div>
+
+
+
+
+
+<div ng-if="refstory == 'min' && refinancing.refMortgage.type !== 'fixe'"> 
+<p> 
+	si les indice sont à leur minimum pour le rachat
+</p>
+</div>
+
+
+
+
+<div ng-if="refstory == 'limit' && refinancing.refMortgage.type !== 'fixe' && refinancing.refIndMaxRef.length>0"> 
+	Sachant que les indices sont actuellement de  {{ refinancing.refIndMaxRef[0]}} les indices doivent atteindre :
+	 <ul ng-repeat= "lim in refinancing.refIndMaxRef | slice:1">
+	  	<li>{{ lim }}</li>
+	  </ul>
+	   
+<p> 
+<p> 
+	
+</p>
+</div>
+<!-- <div ng-if="refstory == 'limit' && refinancing.refMortgage.type !== 'fixe' && refinancing.refIndMaxRef.length<=1 && refinancing.refIndMaxInit.length<=1"> 
+	<p>Avec une Hausse ou une baisse des taux <strong>à la date de la prochaine révision du RACHAT</strong>, le refinancement n'est jamais avantageux!</p> 
+
+	   
+<p> 
+<p> 
+	
+</p>
+</div> -->
+</div>
+</div>
+

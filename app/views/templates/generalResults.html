@@ -1,0 +1,275 @@
+<div ng-if='refinancing.case == 1'>
+	<p>Sauf erreur de notre part et sur base des renseignements que nous avons en notre possession, un refinancement de votre crédit auprès d’Axa ne parait pas intéressant.</p><br>
+
+<p>Cette appréciation s’explique au regard du taux dont vous bénéficiez actuellement et des taux que nous sommes en mesure de vous proposer.</p><br>
+
+<p>A l’heure actuelle, vous bénéficiez d’un taux de <strong>{{ refinancing.initMortgage.trueRate | number:2  }}</strong> % en  <strong>{{ refinancing.initMortgage.type }}</strong>. Avec la même formule de taux, nous pourrions vous proposer un taux de  <strong>{{ refinancing.refMortgage.trueRate | number:2  }}</strong> %. Votre mensualité s’élèverait alors à  <strong>{{ refinancing.refMortgage.monthlyPayment | number:2  }}</strong> € alors qu’elle s’élève aujourd’hui à  <strong>{{ refinancing.initMortgage.monthlyPayment | number:2  }}</strong> €.</p><br>
+
+<p>Pour qu’un refinancement soit intéressant, il faudrait que l’on vous propose un taux de <select ng-model="refinancing.bestRateVal" ng-options="option for option  in refinancing.bestRate"></select>
+ %.</p><br>
+
+<p>Vu qu’un refinancement entraine le paiement d’une indemnité de remploi ( <strong>{{ refinancing.indem  | number:2 }}</strong> €), des frais de mainlevée ( <strong>{{ refinancing.releaseCharges | number:2  }}</strong> €), une nouvelle inscription hypothécaire ( <strong>{{ refinancing.MGRegistration | number:2  }}</strong> €) et des frais de dossier (330 €), nous ne vous conseillons donc pas de refinancer votre crédit.
+</p><br>
+</div >
+
+<div ng-if='refinancing.case == 2'>
+	<p>
+		Sauf erreur de notre part et sur base des renseignements que nous avons en notre possession, bien que ce taux soit inférieur au premier, le paiement  d’une indemnité de remploi (<strong>{{ refinancing.indem  | number:2 }}</strong> €),  de frais de mainlevée (<strong>{{ refinancing.releaseCharges  | number:2 }}</strong> €) et  d’une nouvelle inscription hypothécaire (<strong>{{ refinancing.MGRegistration  | number:2 }}</strong> €) rendent le refinancement peu intéressant.
+	</p><br>
+</div>
+
+
+<div ng-if='refinancing.case == 3 || refinancing.case == 4'>
+	<p>Sauf erreur de notre part et sur base des renseignements que nous avons en notre possession, Pour cette tranche de crédit, nous vous conseillons d’attendre la révision de votre taux en <strong> {{ refinancing.initResults.date.date }}</strong> et donc de ne pas refinancer votre crédit. </p><br>
+
+<p>Cette appréciation s’explique au vu des indices de taux actuels. Ceux-ci étant fort bas, la révision de votre taux  <strong> {{ refinancing.initMortgage.variation.type | typeName }}</strong> vous permettra de bénéficier d’un taux plus avantageux sans devoir refinancer votre crédit.</p><br>
+
+Afin d’illustrer nos propos et de rendre les choses plus concrètes, en voici l’explication chiffrée.<p>
+</p><br>
+
+<table class="table">
+	<tr>
+		<td>Taux initial en  <strong> {{ refinancing.initMortgage.refInd[0].date.date }}</strong>  </td>
+		<td> <strong> {{ refinancing.initMortgage.refInd[0].rate }}</strong> %</td>
+	</tr>
+	<tr>
+		<td>Nouveau taux après révision en  <strong> {{ refinancing.initResults.date.date }}</strong>  </td>
+		<td> <strong> {{ refinancing.initResults.rate }}</strong> %</td>
+	</tr>
+	<tr>
+		<td>Taux  <strong> {{ refinancing.refMortgage.type }}</strong> actuel si refinancement  </td>
+		<td>  <strong> {{ refinancing.refMortgage.trueRate }}</strong>%</td>
+	</tr>
+</table>
+
+<p>Lors de votre crédit, vous avez opté pour un taux variable. Celui-ci sera revu le  <strong> {{ refinancing.initResults.date.date }}</strong>, sur base de la différence entre l’indice de référence de  <strong> {{ refinancing.initMortgage.refInd[0].val }}</strong> (date indice de référence sur renteopdevoet) et de celui du mois qui précède le date de révision le <strong> {{ refinancing.initResults.date.date }}</strong>. A condition que l’indice de référence du mois qui precède la date de révision prévu le  <strong> {{ refinancing.initResults.date.date }}</strong> soit équivalent à celui applicable aujourd’hui, le nouveau taux dont vous pourriez bénéficier lors de cette révision serait de  <strong> {{ refinancing.initResults.rate }}</strong> %. Ce taux vaudrait alors pour les  <strong> {{ refinancing.initMortgage.variation.reval | toAn }}</strong> années l’année à suivre</p><br>
+
+<p>Ces calculs sont effectués à titre informatif et n’impliquent aucun engagement de notre part. Nous attirons votre attention sur le fait que les calculs effectués ci-dessus sont susceptibles d’évoluer en fonction de l’évolution des indices de référence. Nous vous recontacterons bien entendu si les indices de référence évoluent de manière telle qu’un refinancement de votre crédit s’avère plus intéressant que l’attente de la révision des taux en *.</p><br>
+
+</div>
+
+<div ng-if='refinancing.case == 4'>
+	<p>
+		Pour cette tranche de crédit, nous vous conseillons de ne pas procéder au refinancement mais d’attendre la révision de votre taux <strong> {{ refinancing.initMortgage.variation.type | typeName }}</strong> en <strong> {{ refinancing.initMortgage.type }}</strong>.</p><br>
+
+<p>En refinançant votre crédit, vous pourriez gagner <strong>{{ monthDiff | number:2 }}</strong> € de mensualité. Cependant, cette opération entrainera un changement de votre indice de référence. Actuellement, les indices de référence sont très bas. Or, plus votre indice est bas, plus vous risquez de subir une augmentation de votre taux et donc de votre mensualité lors de la prochaine révision.
+	</p><br>
+</div>
+
+<div ng-if='refinancing.case == 5'>
+	<p>Nous avons le plaisir de vous annoncer qu’un refinancement est intéressant et avantageux pour vous.</p><br>
+
+<p>Pour qu’Axa accepte de procéder au refinancement de votre crédit, sachez que votre compte Axa doit être actif, c’est à dire que vous y ayez domicilié votre(vos) salaire(s) et que vous effectuiez au moins cinq transactions par mois avec votre carte bancaire Axa ou votre carte de crédit (Visa Classic et Visa premiumplus), liée au compte.</p><br>
+
+<p>Sauf erreur de notre part et sur base des informations que vous nous avez communiquées, le décompte du refinancement de votre crédit s’établit comme suit :</p><br>
+
+<table class="table">
+	<tr>
+		<td>Solde restant dû (numéro crédit 774- <input type="text" ng-model="credit"> ) (décompte après paiement de l’échéance du <strong> {{ refinancing.refResults.date.date }}</strong>)
+ </td>
+		<td> <strong> {{ refinancing.SRD | number:2 }}</strong> €</td>
+	</tr>
+	<tr>
+		<td>Indemnité de remploi   </td>
+		<td> <strong> {{ refinancing.indem | number:2 }}</strong> €</td>
+	</tr>
+	<tr>
+		<td>Frais de dossier </td>
+		<td>  <strong> {{ refinancing.fileCharges | number:2 }}</strong>€</td>
+	</tr>
+	<tr>
+		<td> Montant total du crédit   </td>
+		<td>  <strong> {{ refinancing.refMortgage.capital | number:2 }}</strong>€</td>
+	</tr>
+</table>
+
+
+	<h4> Tarification du crédit</h4>
+
+<p>Les taux présentés ci-dessous :</p><br>
+
+<p>Choix entre les différentes possibilités en fonction de la situation et du statut du client</p><br>
+
+<div class="form-group"><label class="radio-inline">
+<input ng-change='update(true,true)' type="radio" name="status"  ng-model="status" value="A"> VIP 
+</label>
+<label class="radio-inline">
+<input ng-change='update(true,true)' type="radio" name="status"  ng-model="status" value="B"> TOP VIP
+</label>
+<label class="radio-inline">
+<input ng-change='update(true,true)' type="radio" name="status"  ng-model="status" value="C"> Revenu mensuel
+</label>
+<label class="radio-inline">
+<input ng-change='update(true,true)' type="radio" name="status"  ng-model="status" value="D"> Quotité Faible
+</label><br></div>
+
+<div ng-show="status == 'A'">
+<p>- sont ceux offerts aux clients ayant le statut VIP, c’est-à-dire si :</p><br>
+<p>1) Pour les plus de 35 ans :</p>
+<p>Vous avez un actif chez Axa Banque de minimum 35.000 € depuis plus de six mois, ou si vous souscrivez un tel placement sur une durée de plus de trois ans, avant l’acte ;</p><br>
+<p>Ou, vous (ou vos parents) avez un actif chez Axa Banque ou Axa Assurances de minimum 70.000 €, ou si vous souscrivez un tel placement sur une durée de plus de trois ans</p>
+<p>2) Pour les moins de 35 ans :</p>
+<p>Vous avez moins de 36 ans et avez plus de 3.000 € de revenus nets mensuels.</p><br></div>
+
+<div ng-show="status == 'B'"><p>- sont ceux offerts aux clients ayant le statut TOP VIP, c’est-à-dire si vous avez moins de 36 ans et si :
+Vous (ou vos parents) avez un actif chez Axa Banque de minimum 35.000 € depuis plus de six mois, ou si vous souscrivez un tel placement sur une durée de plus de trois ans, avant l’acte ;
+Vous (ou vos parents) avez un actif chez Axa Banque ou Axa Assurances de minimum 70.000 €, ou si vous souscrivez un tel placement sur une durée de plus de trois ans, avant l’acte.</p><br></div>
+
+<p ng-show="status == 'C'">- sont ceux offerts aux clients ayant des revenus mensuels nets entre <input type="number" > et <input type="number" > € <br></p>
+
+<p ng-show="status == 'D'">- sont fonction d’une quotité faible, c’est-à-dire que le montant total du crédit représente max. 85% des garanties (immobilières et mobilières).
+A défaut, les taux seront majorés.<br></p>
+
+<p>Nous vous proposons pour votre demande de crédit de  <strong>{{ refinancing.refMortgage.capital | number:2 }}</strong>€ :</p><br>
+
+<div ng-show = "refinancing.refMortgage.type !== 'fixe'">
+<div ng-if = "refinancing.refMortgage.refInd.length> 1">
+<h4 >REVISION TAUX</h4>
+
+<p  >En cas de hausse max. du taux, la mensualité max. sera à partir de la <strong>{{ refinancing.refMortgage.variation.fixe | toAn }}</strong> ème année de <strong>{{ refinancing.refResults.monthlyPayment | number:2 }}</strong> €</p>
+<p >En cas de hausse max. du taux et en maintenant la mensualité, la durée totale du crédit sera portée à <strong>{{ refinancing.refResults.durationSameMP }}</strong> mois</p><br>
+</div></div>
+
+<h4>GENERALITES</h4>
+
+<p>Nous vous rappelons que les taux changent tous les jours. Ils ne sont garantis que si vous souscrivez une assurance solde restant dû AXA couvrant au minimum 100% du capital emprunté (assurance qui est parmi les plus compétitives du marché !), une assurance incendie AXA et si vous ouvrez ou disposez d'un compte à vue AXA actif avec domiciliation de salaire. A défaut, Axa est en train de majorer le taux de 0,50%.</p><br>
+<p ng-show = "refinancing.refMortgage.type !== 'fixe'">Axa vous offre la possibilité de modifier la durée du crédit (l’augmenter ou la diminuer pour un taux variable), à tout moment sans indemnité de remploi et sans nouvelle hypothèque (durée max. 30 ans). Ces modifications entraînent uniquement des frais de dossier (actuellement de 330 €).<br></p>
+
+<p ng-show = "refinancing.refMortgage.type !== 'fixe'">En cas de hausse du taux variable, vous pouvez également modifier la convention en prolongeant la durée du crédit (max. 30 ans). <br></p>
+
+<p>Ces tarifications sont effectuées à titre informatif et n’impliquent de notre part ni engagement ni acceptation de votre demande de crédit hypothécaire.</p><br>
+
+<p ng-show = "!refinancing.externalRef"> Nous attirons votre attention sur le fait que, si vous nous donnez votre aval pour le refinancement, celui-ci ne sera effectif que deux mois après la signature de l’offre. Après celle-ci, vous devrez donc encore payer deux fois la mensualité actuelle avant de pouvoir bénéficier de la nouvelle mensualité proposée.<br></p>
+
+
+<h4>IN FINE</h4>
+
+<p>Nous vous remercions et restons bien entendu à votre disposition pour tout renseignement complémentaire.</p><br>
+
+</div>
+
+<div ng-if='refinancing.case == 6'>
+	
+		<p>Nous avons le plaisir de vous annoncer que le refinancement votre crédit <input type="text" placeholder="nom de la banque" name="bankName" ng-model="bankName"> chez Axa est intéressant et avantageux pour vous.</p><br>
+
+<p>Sauf erreur de notre part et sur base des informations que vous nous avez communiquées, le décompte du refinancement de votre crédit s’établit comme suit (à confirmer par votre banque et votre notaire) :</p><br>
+
+
+<table class="table">
+	<tr>
+		<td>Solde restant dû (numéro crédit 774-<input type="text" ng-model="credit">) (décompte après paiement de l’échéance du  <strong> {{ refinancing.refResults.date.date }}</strong>)
+ </td>
+		<td> <strong> {{ refinancing.SRD | number:2 }}</strong> €</td>
+	</tr>
+	<tr>
+		<td>Indemnité de remploi   </td>
+		<td> <strong> {{ refinancing.indem | number:2 }}</strong> €</td>
+	</tr>
+	<tr>
+		<td>Frais de mainlevée</td>
+		<td>  <strong> {{ refinancing.releaseCharges | number:2 }}</strong>€</td>
+	</tr>
+	<tr>
+		<td> Frais de l’acte de crédit   </td>
+		<td>  <strong> {{ refinancing.MGRegistration | number:2 }}</strong>€</td>
+	</tr>
+	<tr>
+		<td> Frais de dossier    </td>
+		<td>  <strong> {{ refinancing.fileCharges | number:2 }}</strong>€</td>
+	</tr>
+	<tr>
+		<td> Montant total du crédit   </td>
+		<td>  <strong> {{ refinancing.refMortgage.capital  | number:2 }}</strong>€</td>
+	</tr>
+</table>
+
+
+
+<h4>TARIFICATIONS</h4>
+
+<p>. Tarification du crédit</p><br>
+
+<p>Les taux présentés ci-dessous :</p><br>
+<p>Choix entre les différentes possibilités en fonction de la situation et du statut du client</p><br>
+
+<div class="form-group">
+<label class="radio-inline">
+<input ng-change='update(true,true)' type="radio" name="status"  ng-model="status" value="A"> VIP 
+</label>
+<label class="radio-inline">
+<input ng-change='update(true,true)' type="radio" name="status"  ng-model="status" value="B"> TOP VIP
+</label>
+<label class="radio-inline">
+<input ng-change='update(true,true)' type="radio" name="status"  ng-model="status" value="C"> Revenu mensuel
+</label>
+<label class="radio-inline">
+<input ng-change='update(true,true)' type="radio" name="status"  ng-model="status" value="D"> Quotité Faible
+</label><br></div>
+
+<div ng-show="status == 'A'">
+<p>- sont ceux offerts aux clients ayant le statut VIP, c’est-à-dire si :</p><br>
+<p>1) Pour les plus de 35 ans :</p>
+<p>Vous avez un actif chez Axa Banque de minimum 35.000 € depuis plus de six mois, ou si vous souscrivez un tel placement sur une durée de plus de trois ans, avant l’acte ;</p><br>
+<p>Ou, vous (ou vos parents) avez un actif chez Axa Banque ou Axa Assurances de minimum 70.000 €, ou si vous souscrivez un tel placement sur une durée de plus de trois ans</p>
+<p>2) Pour les moins de 35 ans :</p>
+<p>Vous avez moins de 36 ans et avez plus de 3.000 € de revenus nets mensuels.</p><br></div>
+
+<div ng-show="status == 'B'"><p>- sont ceux offerts aux clients ayant le statut TOP VIP, c’est-à-dire si vous avez moins de 36 ans et si :
+Vous (ou vos parents) avez un actif chez Axa Banque de minimum 35.000 € depuis plus de six mois, ou si vous souscrivez un tel placement sur une durée de plus de trois ans, avant l’acte ;
+Vous (ou vos parents) avez un actif chez Axa Banque ou Axa Assurances de minimum 70.000 €, ou si vous souscrivez un tel placement sur une durée de plus de trois ans, avant l’acte.</p><br></div>
+
+<p ng-show="status == 'C'">- sont ceux offerts aux clients ayant des revenus mensuels nets entre <input type="number" > et <input type="number" > € <br></p>
+
+<p ng-show="status == 'D'">- sont fonction d’une quotité faible, c’est-à-dire que le montant total du crédit représente max. 85% des garanties (immobilières et mobilières).
+A défaut, les taux seront majorés.<br></p>
+
+<p>Nous vous proposons pour votre demande de crédit de  <strong>{{ refinancing.refMortgage.capital | number:2 }}</strong>€ :</p><br>
+
+<div ng-show = "refinancing.refMortgage.type !== 'fixe'">
+<div ng-if = "refinancing.refMortgage.refInd.length> 1">
+<h4 >REVISION TAUX</h4>
+
+<p  >En cas de hausse max. du taux, la mensualité max. sera à partir de la <strong>{{ refinancing.refMortgage.variation.fixe | toAn }}</strong> ème année de <strong>{{ refinancing.refResults.monthlyPayment | number:2 }}</strong> €</p>
+<p >En cas de hausse max. du taux et en maintenant la mensualité, la durée totale du crédit sera portée à <strong>{{ refinancing.refResults.durationSameMP }}</strong> mois</p><br>
+</div></div>
+
+<h4>GENERALITES</h4>
+
+<p>Nous vous rappelons que les taux changent tous les jours. Ils ne sont garantis que si vous souscrivez une assurance solde restant dû AXA couvrant au minimum 100% du capital emprunté (assurance qui est parmi les plus compétitives du marché !), une assurance incendie AXA et si vous ouvrez ou disposez d'un compte à vue AXA actif avec domiciliation de salaire. A défaut, Axa est en train de majorer le taux de 0,50%.</p><br>
+
+<p ng-show = "refinancing.refMortgage.type !== 'fixe'" >Axa vous offre la possibilité de modifier la durée du crédit (l’augmenter ou la diminuer pour un taux variable), à tout moment sans indemnité de remploi et sans nouvelle hypothèque (durée max. 30 ans). Ces modifications entraînent uniquement des frais de dossier (actuellement de 330 €).<br> </p>
+
+<p ng-show = "refinancing.refMortgage.type !== 'fixe'" >En cas de hausse du taux variable, vous pouvez également modifier la convention en prolongeant la durée du crédit (max. 30 ans).<br> </p>
+
+Ces tarifications sont effectuées à titre informatif et n’impliquent de notre part ni engagement ni acceptation de votre demande de crédit hypothécaire.<p>
+</p><br>
+
+
+<p>II. Tarification de l’assurance solde restant dû</p><br>
+
+<p>Si vous le désirez, nous vous ferons parvenir une tarification pour l’assurance solde restant dû. N’hésitez pas à nous contacter pour que nous vous la fassions parvenir dans les plus brefs délais.</p><br>
+
+<p>III. Comptes bancaires</p><br>
+
+<p>Nous vous invitons à ouvrir un compte à vue et un compte d’épargne gratuit chez Axa et **** y verser vos fonds propres afin de bénéficier des meilleurs taux chez Axa. Le compte d’épargne offre un taux de 0,90% + 0,20%</p><br>
+
+<p>Pour ce faire, cliquer sur l’adresse :<a href="https://start2bank.axa.be/start2bank/form.aspx?lang=FR&WT.mc_id=BE-PERM-011&origaorgcd=14419" target="_blank">https://start2bank.axa.be/start2bank/form.aspx?lang=FR&WT.mc_id=BE-PERM-011&origaorgcd=14419</a> </p><br>
+
+<p>OU :</p><br>
+
+<p>Nous vous invitons à ouvrir un compte d’épargne chez Axa et y verser vos fonds propres afin de bénéficier des meilleurs taux chez Axa. Dès accord de votre part, nous ouvrirons le compte en notre agence et vous transmettrons le numéro de compte par e-mail.</p><br>
+
+
+<h4>IN FINE</h4>
+
+<p>Nous vous en remercions d’avance et restons bien entendu à votre disposition pour tout renseignement complémentaire.</p><br>
+	</p><br>
+</div>
+
+<div ng-if='refinancing.case == 7'>
+	<p></p><br>
+</div>
+
+<div ng-if='refinancing.case == 8'>
+	<p></p><br>
+</div>

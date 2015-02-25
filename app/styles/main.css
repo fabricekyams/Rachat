@@ -1,0 +1,449 @@
+/****************************/
+/** Design / Front-End     **/
+/** by Phenomen            **/
+/** http://www.phenomen.be **/
+/** Copyright - 2014       **/
+/****************************/
+
+/* ==========================================================================
+   RESET CSS
+   ========================================================================== */
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike,  sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+[data-sr] { visibility: hidden; } 
+
+
+
+
+/* ==========================================================================
+   LOADING;
+   ========================================================================== */
+#mainapp {
+  display:none;
+}
+
+#mainloading {
+  display: block;
+}
+
+#loading {
+position: absolute;
+top: 0px;
+width: 1280px;
+margin: 0 auto;
+overflow: hidden;
+z-index: 100;
+width: 100%;
+height: 100%;
+background-color: white;
+}
+#loading .container-fluid {
+width: 250px;
+margin: 0 auto;
+padding-top: 50px;
+margin-top: 50px;
+}
+.ball {
+background-color: rgba(0,0,0,0);
+border:5px solid rgba(0,183,229,0.9);
+opacity:.9;
+border-top:5px solid rgba(0,0,0,0);
+border-left:5px solid rgba(0,0,0,0);
+border-radius:50px;
+box-shadow: 0 0 35px #2187e7;
+width:50px;
+height:50px;
+margin:10px auto;
+-moz-animation:spin .5s infinite linear;
+-webkit-animation:spin .5s infinite linear;
+}
+.ball1 {
+background-color: rgba(0,0,0,0);
+border:5px solid rgba(0,183,229,0.9);
+opacity:.9;
+border-top:5px solid rgba(0,0,0,0);
+border-left:5px solid rgba(0,0,0,0);
+border-radius:50px;
+box-shadow: 0 0 15px #2187e7;
+width:30px;
+height:30px;
+margin:0 auto;
+position:relative;
+top:-50px;
+-moz-animation:spinoff .5s infinite linear;
+-webkit-animation:spinoff .5s infinite linear;
+}
+@-moz-keyframes spin {
+0% { -moz-transform:rotate(0deg); }
+100% { -moz-transform:rotate(360deg); }
+}
+@-moz-keyframes spinoff {
+0% { -moz-transform:rotate(0deg); }
+100% { -moz-transform:rotate(-360deg); }
+}
+@-webkit-keyframes spin {
+0% { -webkit-transform:rotate(0deg); }
+100% { -webkit-transform:rotate(360deg); }
+}
+@-webkit-keyframes spinoff {
+0% { -webkit-transform:rotate(0deg); }
+100% { -webkit-transform:rotate(-360deg); }
+}
+/* ==========================================================================
+   BODY
+   ========================================================================== */
+
+body {
+  font-size: 18px;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+h1 {
+  font-size: 50px;
+  line-height: 60px;
+  margin-top: 60px;
+}
+
+h2 {
+  font-size: 40px;
+  line-height: 45px;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+/* Space out content a bit */
+body {
+  padding-bottom: 20px;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}  
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
+.export-btn {
+    margin-top: 8px;
+    position: fixed;
+    right: 15px;
+    z-index: 1040;
+}
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+.capital {
+  -webkit-transition: all linear 0.5s;
+  transition: all linear 0.5s;
+}
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/* ==========================================================================
+   SECTION
+   ========================================================================== */
+
+#website {
+  position: relative;
+}
+
+#resultat {
+    background-color: #99b2ff;
+    border: 2px none;
+    border-radius: 3px;
+    margin-left: 10px;
+    margin-top: 25px;
+    width: 300px;
+    position: fixed;
+    z-index: 100;
+    padding: 5px;
+    text-align: center;
+}
+
+.mginput{
+  /*background-color: white;*/
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  padding: 50px 10px 0;
+}
+#sectionid .content{
+  padding-bottom:40px; 
+}
+
+#sections {
+  position: relative;
+}
+
+section {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+
+
+
+.header{
+  /*height: 70px;*/
+}
+
+.form .error {
+  color: red;
+  box-shadow: red;
+}
+
+.form input:nth-child(even) {
+  margin-left: 35px;
+}
+
+.form input:nth-child(odd) {
+  margin-right: 35px;
+}
+
+
+.successMessage, .errorMessage {
+  display: none;
+
+}
+
+#inputs .container, #inputsPlus .container, .container-fluid .container, #calcbtn .container {
+  min-width: 1100px;
+}
+.container {
+  min-width: 1500px;
+}
+.isBenef {
+  color: green;
+} 
+
+.isNotBenef {
+  color: red;
+}
+input.form-control {
+  border:none;
+  border-radius: 0px;
+}
+
+.refInputs{
+  background: #1e5799; /* Old browsers */
+background: -moz-linear-gradient(top,  #1e5799 0%, #217fc6 99%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(99%,#217fc6)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #1e5799 0%,#217fc6 99%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #1e5799 0%,#217fc6 99%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #1e5799 0%,#217fc6 99%); /* IE10+ */
+background: linear-gradient(to bottom,  #1e5799 0%,#217fc6 99%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#217fc6',GradientType=0 ); /* IE6-9 */
+
+
+  color: white;
+}
+input.datepicker{
+  width: 100%;
+  color: black;
+}
+/* Customize container */
+@media (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+.jumbotron .btn {
+  font-size: 21px;
+  padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+}
+.marketing p + h4 {
+  margin-top: 28px;
+}
+
+section#inputs {
+  background-color:     #D6D6FF;
+
+}
+
+section#inputsPlus {
+  background-color:     #FFEBC2;
+
+}
+
+.center{
+  text-align: center;
+}
+
+.bottom{
+  padding-bottom: 40px;
+}
+
+#results {
+  background-color: #F0F0F5; 
+}
+#rateVar {
+  background-color: #ADD6FF; 
+}
+table {
+  background-color: white;
+}
+#amort {
+  background-color: #FFEBC2; 
+}
+
+#initMG {
+  /*background-color: #99CCB2; */
+}
+
+#refMG {
+  /*background-color: #FFC299; */
+}
+
+/* ==========================================================================
+   USER
+   ========================================================================== */
+
+.form-signin {
+margin: 0 auto;
+max-width: 330px;
+padding: 15px;
+}
+
+/* ==========================================================================
+   MEDIA QUERIES
+   ========================================================================== */
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+@media screen and (max-height: 790px) {
+}
+
+@media screen and (max-width: 1210px) {
+}
+
+@media screen and (max-width: 1100px) {
+}
+
+@media screen and (max-width: 1023px) {
+}
+
+@media screen and (max-width: 767px) {
+}
+
+@media screen and (max-width: 480px) {
+}
+
+
+

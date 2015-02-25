@@ -1,0 +1,86 @@
+<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+<div class="container-fluid">
+<div class="navbar-header">
+<a href="#" class="navbar-brand">Admin</a>
+</div>
+<div class="collapse navbar-collapse container">
+<ul class="nav navbar-nav">
+<li class=""><a href=""  ng-click="getData('rate')">Tableau des Taux</a></li>
+<li class=""><a href=""  ng-click="getData('ind')">Indice de références</a></li>
+</ul>
+</div>
+</div>
+</nav>
+<div class="container">
+	<div ng-show="nav=='rate'">
+	<form action="">
+		<table class="table">
+            <CAPTION>  <h2>Tableau des taux</h2></CAPTION>
+            <TR> 
+             <TH>type</TH> 
+             <TH>durée minimum (mois)</TH> 
+             <TH>durée maximun (mois)</TH> 
+             <TH>cap +</TH> 
+             <TH>cap -</TH> 
+             <TH>taux </TH> 
+
+           </TR> 
+
+            <TR ng-repeat="rate in rateTable track by $index"> 
+
+             <TD><select style="wi"   class="form-control" id="finType" ng-model="rate.type" ng-options="option for option  in type"></select></TD> 
+             <td><input ng-model="rate.duration_min"   type="number" ng-model-options="{ getterSetter: true }" class="form-control"   ></td>
+             <td><input ng-model="rate.duration_max"  type="number" ng-model-options="{ getterSetter: true }" class="form-control"  ></td>
+             <td><input ng-model="rate.cap_pos"   type="number" ng-model-options="{ getterSetter: true }" class="form-control"   ></td>
+             <td><input ng-model="rate.cap_neg"   type="number" ng-model-options="{ getterSetter: true }" class="form-control"    ></td>
+             <td><input ng-model="rate.rate"   type="number" ng-model-options="{ getterSetter: true }" class="form-control"   ></td>
+             <!-- <TD> {{ amort.dateTerme }}</TD>  -->
+             
+
+           </TR> 
+         </table>
+         <button style = "float: right" ng-click='setRates()' type="submit" class="btn btn-success">Sauvegarder</button>
+	</form>
+
+
+	</div>
+	<div ng-show="nav=='ind'">
+     
+        <table class="table">
+            <CAPTION>  <h2>Tableau des taux</h2></CAPTION>
+            <TR> 
+             <TH>date</TH> 
+             <TH>A annuelle</TH> 
+             <TH>C triennal</TH> 
+             <TH>E quinquennal</TH> 
+             <TH>Action</TH> 
+
+           </TR> 
+            <TR > 
+             <TD><input required style="wi"  id="finType" name="date" ng-model="date" id="datetimepicker" class="datepicker form-control" type="text" before-today-admin ></TD> 
+             <td><input required ng-model="A" name="A"  type="number" ng-model-options="{ getterSetter: true }" class="form-control"   ></td>
+             <td><input required ng-model="C" name="C" type="number" ng-model-options="{ getterSetter: true }" class="form-control"  ></td>
+             <td><input required ng-model="E" name="E"   type="number" ng-model-options="{ getterSetter: true }" class="form-control"   ></td>
+             <td><input  ng-click='setInds()' type="submit" class="btn btn-success" id="submit" value="Enregistrer"></td>
+             <!-- <TD> {{ amort.dateTerme }}</TD>  -->
+             
+
+           </TR> 
+            <TR ng-repeat="ind in indTable track by $index"> 
+
+             <TD>{{ind.date}}</TD> 
+             <td>{{ind.A}}</td>
+             <td>{{ind.C}}</td>
+             <td>{{ind.E}}</td>
+             <td><button ng-click='deleteInds()' type="submit" class="btn btn-danger">Supprimer</button></td>
+             
+             <!-- <TD> {{ amort.dateTerme }}</TD>  -->
+             
+
+           </TR> 
+         </table>
+         
+    </form>
+
+    </div>
+</div>
