@@ -648,6 +648,7 @@ define([
 								//this.refInd[i][0] = {};
 								this.refInd[i].dateList[0] = {};
 								this.refInd[i].dateList[0].date = this.getDateTerme(this.variation.fixe+(this.variation.reval*(i-1)));
+								this.refInd[i].nbMonth = (this.variation.fixe+(this.variation.reval*(i-1)) - (this.duration - this.durationLeft));
 								this.refInd[i].date = this.refInd[i].dateList[0];
 								this.refInd[i].dateList[0].position = -1;
 								this.refInd[i].val = this.story.localeCompare('costum')==0 ? this.refTab[this.refTab.length-1][this.variation.type] : this.round(this.calculInRef(rate));
@@ -883,7 +884,23 @@ define([
 			},
 
 			quartile : function (){
-				//console.log('start ',this.getRefIndLength());
+				var now = new Date();
+				var offset = 0; 
+				var date
+				if (this.duration > this.durationLeft && this.refInd.length > 1) {
+					var diff = this.nbMonth(this.date, now);
+					var l = (this.duration - this.durationLeft) - diff;
+					offset = l
+					/*var pos = this.refInd.length - this.getRefIndLength();
+					if (pos>0) {
+						date = new Date(this.formatDate(this.refInd[pos].date.date))
+					 	offset= this.nbMonth(now, date)
+					};*/
+				}else{
+					date = this.date;
+				 	offset= this.nbMonth(now, date) < 0 ? 0 : this.nbMonth(now, date); 
+				};
+
 				var ordered = this.sortTab(this.moyDuration,  this.refTab);
 				var len = this.moyDuration< this.refTab.length ? this.moyDuration :  this.refTab.length;
 				var quart = [];
@@ -901,15 +918,11 @@ define([
 					'indice':ordered[Math.ceil((len/4)*3)-1],
 					'rate': rateb
 				};
-				var qlen =  this.getRefIndLength();
-				console.log(qlen);
-				var offset = this.refInd.length - qlen;
-				for (var i = 0; i < qlen; i++) {
+				//var qlen =  this.getRefIndLength();
+				//var offset = this.refInd.length - qlen;
+				/*for (var i = 0; i < qlen; i++) {
 					var orde;var lent;
-					console.log('offset ',offset);
 					if (offset==0 && i==0) {
-						console.log(qlen);
-						console.log(this.durationLeft);
 						if (this.durationLeft == this.duration) {
 							lent = this.variation.fixe< this.refTab.length ? this.variation.fixe :  this.refTab.length;
 						}else{
@@ -919,8 +932,6 @@ define([
 						
 					}else{
 						if (i==0 ) {
-							console.log(qlen);
-							console.log(this.durationLeft);
 							lent = this.durationLeft - (qlen)*this.variation.reval; 
 						}else{
 							var rest = this.durationLeft == this.duration ? this.variation.fixe : this.durationLeft - (qlen)*this.variation.reval;
@@ -946,8 +957,32 @@ define([
 					};
 
 					quart[i+1].len = lent;
+				};*/
+				for (var i = 0; i <=this.durationLeft; i++) {
+					var lent = (i+1+offset)< this.refTab.length ? (i+1+offset) :  this.refTab.length;
+					orde =  this.sortTab(lent, this.refTab);
+					 var ratec = DC.CreditUtil.tauxPeriodiqueToAn(this.indexation(orde[Math.ceil(lent/4)-1]),1)*100;
+					ratec = Math.round(ratec*100)/100;
+
+					var rated = DC.CreditUtil.tauxPeriodiqueToAn(this.indexation(orde[(Math.ceil((lent/4)*3)-1)]),1)*100;
+					rated = Math.round(rated*100)/100;
+					quart[i+1]={};
+
+					quart[i+1].q25 = {
+						'indice': orde[Math.ceil(lent/4)-1],
+						'rate' : ratec
+					};
+
+					quart[i+1].q75 = {
+						'indice':orde[Math.ceil((lent/4)*3)-1],
+						'rate': rated
+					};
+
+					quart[i+1].moy = this.moyenne(lent);
+
+
+					quart[i+1].len = lent;
 				};
-				console.log(quart);
 
 
 				return quart;
@@ -969,7 +1004,21 @@ define([
 				});
 
 				return ordered;
-			}
+			},
+
+			nbMonth :  function(begin, end) {
+			    var dB = begin.getDate();
+			    var mB = begin.getMonth();
+			    var yB = begin.getFullYear();
+			    var dE = end.getDate();
+			    var mE = end.getMonth();
+			    var yE = end.getFullYear();
+			    var m = (yE - yB) * 12 + (mE - mB);
+			    if (dE < dB) {
+			      m--;
+			    }
+			    return m;
+			  }
 
 
 

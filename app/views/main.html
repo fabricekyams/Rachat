@@ -577,12 +577,12 @@
   <div class="container">
   <div class="row" >
      <div class="col-md-12" >
-      <CAPTION>  <h2>Moyennes</h2></CAPTION>
+      <CAPTION>  <h2>Moyennes et quartiles des taux</h2></CAPTION>
     </div>
   </div>
     <div class="row">
-      <div class="col-md-6">
-        <h4>Pret Initial</h4>
+      <div ng-if="refinancing.initMortgage.type !='fixe'" class="col-md-6">
+        <h4 >Pret Initial</h4>
         <div class="form-group">
           <label>Durée d'échantillonage (mois)</label>
           <input class="form-control" ng-model="refinancing.initMortgage.moyDuration" type="number" ng-change="updateMoyInit(false,true)">
@@ -611,10 +611,10 @@
           </tr>
         </table>
 
-        <gh-visualization  val="moyInitChart" grouped="grouped" type="column" field="field" style="display:block;"></gh-visualization> 
+       
 
       </div>
-      <div class="col-md-6">
+      <div ng-if="refinancing.refMortgage.type !='fixe'" class="col-md-6">
         <h4> Rachat</h4>
         <div class="form-group">
           <label>Durée d'échantillonage (mois)</label>
@@ -634,22 +634,35 @@
           </tr>
           <tr>
             <th>Quart25</th>
-            <td>{{ refinancing.refMortgage.quart[0].indice }}</td>
-            <td>{{ refinancing.refMortgage.quart[0].rate | number:2}}%</td>
+            <td>{{ refinancing.refMortgage.quart[0].q25.indice }}</td>
+            <td>{{ refinancing.refMortgage.quart[0].q25.rate | number:2}}%</td>
           </tr>
           <tr>
             <th>Quart75</th>
-            <td>{{ refinancing.refMortgage.quart[1].indice }}</td>
-            <td>{{ refinancing.refMortgage.quart[1].rate | number:2}}%</td>
+            <td>{{ refinancing.refMortgage.quart[0].q75.indice }}</td>
+            <td>{{ refinancing.refMortgage.quart[0].q75.rate | number:2}}%</td>
           </tr>
         </table>
-      </div
-      <div class="col-md-6">
-        
+      </div>
+      </div>
+
+      <div class="row">
+        <div  ng-if="refinancing.initMortgage.type !='fixe'" class="col-md-6">
+           <gh-visualization  val="moyInitChart" grouped="grouped" type="column" field="field" style="display:block;"></gh-visualization> 
+        </div>
+        <div  ng-if="refinancing.refMortgage.type !='fixe'" class="col-md-6">
+            <gh-visualization  val="moyRefChart" grouped="grouped" type="column" field="field" style="display:block;"></gh-visualization> 
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-md-12">
+          <p> Sur Le(s) graph(s) ci-dessus, vous pouvez observer les informations suivantes:  <br> <br> la ligne rouge représente les taux. <br>Ensuite, sur base des indices de références échantillonées sur les {{ refinancing.refMortgage.refTab.length }} derniers mois (depuis 1992), nous avons: <br>La zone en bleu: le quartile 75 et 25 des taux.<br> La ligne bleu represente la moyenne des taux.<br> <br>Ces taux (quartiles et moyennes) sont calculés à partir de la date de rachat souhaité et en fonction du taux de départ, de l'indice de départ et des caps positif et negatif du prêt.  <br>
+          Par exemple, si la date de rachat est dans dans deux mois, on calcule les quartiles et la moyenne sur base des indices enchantillonnées sur les deux derniers mois. On calcules ensuite les taux pour ces indices et on les place sur le graphe <br> Pour chaques mois qui suit, on rajoute un enchantillon, on recalcule les quartiles, la moyenne et les taux  que l'on rajoute au graphe et ainsi de suite.<br> On peux alors observer l'évolution possible des taux en fonction de la moyenne et des quartiles des indice précédents</p>
+        </div>
       </div>
       
     </div>
-  </div>
+  
 </section>
 
 <section ng-show='started' id='amort'>

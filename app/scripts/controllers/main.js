@@ -609,6 +609,24 @@
 
                 }
 
+                $scope.diffMonth = function(begin, end) {
+                    var dB = begin.getDate();
+                    var mB = begin.getMonth();
+                    var yB = begin.getFullYear();
+                    var dE = end.getDate();
+                    var mE = end.getMonth();
+                    var yE = end.getFullYear();
+                    var m = (yE - yB) * 12 + (mE - mB);
+                    if (dE < dB) {
+                      m--;
+                    }
+                    return m;
+                  }
+
+
+
+                
+
                 $scope.formatindiceInit = function (argument) {
 
                     var interest = [];
@@ -620,156 +638,172 @@
                         capitalleft[i] = $scope.round($scope.refinancing.initMortgage.amortization[i].capital);
                     }
 
-                    var start = $scope.refinancing.initMortgage.amortization.length - $scope.refinancing.durationLeft;
+                    //var start = $scope.refinancing.initMortgage.refInd.length - $scope.refinancing.initMortgage.get;
 
-
-                    var refstart = $scope.refinancing.refMortgage.refTab.length - ($scope.refinancing.initMortgage.amortization.length-$scope.refinancing.durationLeft);
+                    var now = new Date();
+                    var diff = $scope.diffMonth($scope.refinancing.initMortgage.date , now);
+                    var refstart = $scope.refinancing.refMortgage.refTab.length - $scope.diffMonth($scope.refinancing.initMortgage.date , now);
+                    //var refstart = $scope.refinancing.refMortgage.refTab.length - ($scope.refinancing.initMortgage.amortization.length-$scope.refinancing.durationLeft);
 
                     if ($scope.refinancing.initMortgage.type.localeCompare('fixe')!==0) {
+                        console.log( $scope.refinancing.initMortgage.refInd);
                         var j = 0;
                         for (var i = refstart; i < $scope.refinancing.initMortgage.refTab.length; i++) {
                             indice[j] = $scope.refinancing.initMortgage.refTab[i][$scope.refinancing.initMortgage.variation.type];
                             j++;
                         };
+
                         var initStart = $scope.refinancing.initMortgage.refInd.length - $scope.refinancing.initMortgage.getRefIndLength();
                         if (initStart>0 ) {
                             var k=indice.length;
-                            var end;
+
+                            for (var i = initStart; i < $scope.refinancing.initMortgage.refInd.length; i++) {
+                                var leng = i==initStart ? $scope.refinancing.initMortgage.refInd[i].nbMonth : $scope.refinancing.initMortgage.refInd[i].nbMonth - $scope.refinancing.initMortgage.refInd[i-1].nbMonth;
+                                for (var z = 0; z < leng; z++) {
+                                    indice[k] = $scope.refinancing.initMortgage.refInd[i-1].val;
+                                    k++;  
+                                };
+                            };
+                            k=indice.length;
+                            for (var i = k; i < $scope.refinancing.initMortgage.duration; i++) {
+                                indice[i] = $scope.refinancing.initMortgage.refInd[$scope.refinancing.initMortgage.refInd.length-1].val;
+                                //k++;  
+                            };
+                            
+                            /*var end;
                             if (indice.length< $scope.refinancing.initMortgage.variation.fixe) {
                                end =  $scope.refinancing.initMortgage.variation.fixe - indice.length;
                                for (var j = 0; j < end; j++) {
-                                indice[k] = $scope.refinancing.initMortgage.refTab[$scope.refinancing.initMortgage.refTab.length-1][$scope.refinancing.initMortgage.variation.type];
-                                k++;
-                            };
-                        }else{
-                            var tmp = indice.length - $scope.refinancing.initMortgage.variation.fixe;
-                            if (tmp > $scope.refinancing.initMortgage.variation.reval) {
-                                end = tmp%$scope.refinancing.initMortgage.variation.reval ==0 ? $scope.refinancing.initMortgage.variation.reval : tmp%$scope.refinancing.initMortgage.variation.reval;
-                                for (var j = 0; j < end; j++) {
                                     indice[k] = $scope.refinancing.initMortgage.refTab[$scope.refinancing.initMortgage.refTab.length-1][$scope.refinancing.initMortgage.variation.type];
                                     k++;
                                 };
-
                             }else{
-                                if (tmp < $scope.refinancing.initMortgage.variation.reval) {
-                                 end =  $scope.refinancing.initMortgage.variation.reval - tmp;
-                                 for (var j = 0; j < end; j++) {
-                                    indice[k] = $scope.refinancing.initMortgage.refTab[$scope.refinancing.initMortgage.refTab.length-1][$scope.refinancing.initMortgage.variation.type];
-                                    k++;
-                                };
+                                var tmp = indice.length - $scope.refinancing.initMortgage.variation.fixe;
+                                if (tmp > $scope.refinancing.initMortgage.variation.reval) {
+                                    end = tmp%$scope.refinancing.initMortgage.variation.reval ==0 ? $scope.refinancing.initMortgage.variation.reval : tmp%$scope.refinancing.initMortgage.variation.reval;
+                                    for (var j = 0; j < end; j++) {
+                                        indice[k] = $scope.refinancing.initMortgage.refTab[$scope.refinancing.initMortgage.refTab.length-1][$scope.refinancing.initMortgage.variation.type];
+                                        k++;
+                                    };
 
+                                }else{
+                                    if (tmp < $scope.refinancing.initMortgage.variation.reval) {
+                                     end =  $scope.refinancing.initMortgage.variation.reval - tmp;
+                                     for (var j = 0; j < end; j++) {
+                                        indice[k] = $scope.refinancing.initMortgage.refTab[$scope.refinancing.initMortgage.refTab.length-1][$scope.refinancing.initMortgage.variation.type];
+                                        k++;
+                                    };
+
+                                    };
+                                };
                             };
+                            for (var i = initStart; i < $scope.refinancing.initMortgage.refInd.length; i++) {
+
+                                var rest =(((i-1)*$scope.refinancing.initMortgage.variation.reval))+$scope.refinancing.initMortgage.variation.fixe;
+                                if($scope.refinancing.initMortgage.duration -  rest < $scope.refinancing.initMortgage.variation.reval){
+                                    var k=indice.length;
+                                    for (var j = rest; j < $scope.refinancing.initMortgage.duration; j++) {
+                                        indice[k] = $scope.refinancing.initMortgage.refInd[i].val;
+                                        k++;
+                                    };
+                                }else{
+                                    var k=indice.length;
+                                    for (var j = 0; j < $scope.refinancing.initMortgage.variation.reval; j++) {
+                                        indice[k] = $scope.refinancing.initMortgage.refInd[i].val;
+                                        k++
+                                    };
+                                }
+
+
+                            };*/
                         };
                     };
-                    for (var i = initStart; i < $scope.refinancing.initMortgage.refInd.length; i++) {
-
-                        var rest =(((i-1)*$scope.refinancing.initMortgage.variation.reval))+$scope.refinancing.initMortgage.variation.fixe;
-                        if($scope.refinancing.initMortgage.duration -  rest < $scope.refinancing.initMortgage.variation.reval){
-                            var k=indice.length;
-                            for (var j = rest; j < $scope.refinancing.initMortgage.duration; j++) {
-                                indice[k] = $scope.refinancing.initMortgage.refInd[i].val;
-                                k++;
-                            };
-                        }else{
-                            var k=indice.length;
-                            for (var j = 0; j < $scope.refinancing.initMortgage.variation.reval; j++) {
-                                indice[k] = $scope.refinancing.initMortgage.refInd[i].val;
-                                k++
-                            };
-                        }
 
 
-                    };
-                };
-            };
+                    var chart = {
+                        chart: {
+                            zoomType: 'xy',
+                            renderTo: 'indiceInitChart'
+
+                        },
+                        title: {
+                            text: 'Indices - Remboursement Prêt Actuel'
+                        },
+                        plotOptions : {
+                            area: {
+                                stacking: 'normal',
+                                marker: {
+                                    enabled: false
+                                }
+                            },
+                            spline: {
+                                marker: {
+                                    enabled: false
+                                }
+                            }
+                        },
+                        yAxis:[{
+                            title: {
+                                text: 'Remboursement',
+                            }
+                        },{
+                            title: {
+                                text: 'Indice',
+                            }
+                        }],
+                        tooltip: {
+                            shared: true
+                        },
+                        series: [{
+                            name: 'Interet',
+                            type: 'area',
+                            data: interest,
+                            stack: 'Actuel',
+                            color: '#B8704D',
+                            yAxis: 1,
+                            tooltip: {
+                                valueSuffix: '€'
+                            }
+                        }, {
+                            name: 'Remboursement',
+                            type: 'area',
+                            data: capitalleft,
+                            stack: 'Actuel',
+                            color: '#7A2900',
+                            yAxis: 1,
+                            tooltip: {
+                                valueSuffix: '€'
+                            }
+                        },
+                        {
+                            name: 'Indice prêt actuel',
+                            type: 'spline',
+                            color: '#0F0500',
+                            data: indice,
+                            tooltip: {
+                                valueSuffix: '%'
+                            }
+                        }]
 
 
-            var chart = {
-                chart: {
-                    zoomType: 'xy',
-                    renderTo: 'indiceInitChart'
 
-                },
-                title: {
-                    text: 'Indices - Remboursement Prêt Actuel'
-                },
-                plotOptions : {
-                    area: {
-                        stacking: 'normal',
-                        marker: {
-                            enabled: false
-                        }
-                    },
-                    spline: {
-                        marker: {
-                            enabled: false
-                        }
+
                     }
-                },
-                yAxis:[{
-                    title: {
-                        text: 'Remboursement',
-                    }
-                },{
-                    title: {
-                        text: 'Indice',
-                    }
-                }],
-                tooltip: {
-                    shared: true
-                },
-                series: [{
-                    name: 'Interet',
-                    type: 'area',
-                    data: interest,
-                    stack: 'Actuel',
-                    color: '#B8704D',
-                    yAxis: 1,
-                    tooltip: {
-                        valueSuffix: '€'
-                    }
-                }, {
-                    name: 'Remboursement',
-                    type: 'area',
-                    data: capitalleft,
-                    stack: 'Actuel',
-                    color: '#7A2900',
-                    yAxis: 1,
-                    tooltip: {
-                        valueSuffix: '€'
-                    }
-                },
-                {
-                    name: 'Indice prêt actuel',
-                    type: 'spline',
-                    color: '#0F0500',
-                    data: indice,
-                    tooltip: {
-                        valueSuffix: '%'
-                    }
-                }]
 
+                    $scope.idChart = 'indiceInitChart';
 
-
-
-            }
-
-            $scope.idChart = 'indiceInitChart';
-
-            return chart;
+                    return chart;
 
         }
 
         $scope.formatMoyInit = function (argument) {
            var len = $scope.refinancing.initMortgage.moyDuration > $scope.refinancing.initMortgage.refTab.length ? $scope.refinancing.initMortgage.refTab.length : $scope.refinancing.initMortgage.moyDuration;
            var start = $scope.refinancing.initMortgage.duration - $scope.refinancing.initMortgage.durationLeft;
-           console.log(start);
            var range = [];
            var moy = [];
            var rates = [];
            var j=0;
            if ($scope.refinancing.initMortgage.type.localeCompare('fixe')!==0) {
-            console.log($scope.refinancing.initPos-1);
                 for (var i = 0; i < start; i++) {
                     range[i] = null;
                     moy[i] = null;
@@ -778,7 +812,6 @@
                 if ($scope.refinancing.initPos-1>0) {
                     for (var i = 1; i < $scope.refinancing.initMortgage.refInd.length; i++) {
                         var deb = i==1 ? $scope.refinancing.initMortgage.variation.fixe : $scope.refinancing.initMortgage.variation.fixe+$scope.refinancing.initMortgage.variation.reval*(i-1);
-                        console.log('de',deb);
                         for (var k = deb;k <$scope.refinancing.initMortgage.duration; k++) {
                             rates[k] = $scope.refinancing.initMortgage.refInd[i].rate;
                             //range[k] = [$scope.refinancing.initMortgage.quart[i].q25.rate,$scope.refinancing.initMortgage.quart[i].q75.rate];
@@ -786,14 +819,17 @@
                     };
                 };
                 var end = $scope.refinancing.initMortgage.moyDuration < $scope.refinancing.initMortgage.duration ? $scope.refinancing.initMortgage.moyDuration : $scope.refinancing.initMortgage.duration;
-                
+                    var s=1;
                    for (var i = start; i < $scope.refinancing.initMortgage.duration; i++) {
                        //range[i] = [$scope.refinancing.initMortgage.quart[0].rate,$scope.refinancing.initMortgage.quart[1].rate];
-                       moy[i] = $scope.refinancing.initMortgage.moy.rate;
+                       moy[i] = $scope.refinancing.initMortgage.quart[s].moy.rate;
+                      // moy[i] = $scope.refinancing.initMortgage.moy.rate;
+                       range[i] = [$scope.refinancing.initMortgage.quart[s].q25.rate,$scope.refinancing.initMortgage.quart[s].q75.rate];
+                       s++;
                        //rates[i] = $scope.refinancing.initMortgage.trueRate;
                    };
                    var s = start;
-                   for (var i = 0; i < $scope.refinancing.initMortgage.quart.length; i++) {
+                   /*for (var i = 0; i < $scope.refinancing.initMortgage.quart.length; i++) {
                         var en = $scope.refinancing.initMortgage.quart[i].len < $scope.refinancing.initMortgage.duration ?  $scope.refinancing.initMortgage.quart[i].len : $scope.refinancing.initMortgage.duration;
                        for (var m = 0; m <$scope.refinancing.initMortgage.quart[i].len; m++) {
                             if (s < $scope.refinancing.initMortgage.duration) {
@@ -801,8 +837,7 @@
                                 s++;
                             };
                        };
-                   };
-                   console.log('range',range);
+                   };*/
             
             }
 
@@ -813,13 +848,13 @@
 
                 },
                 title: {
-                    text: 'Moyenne et quartil Pret Actuel'
+                    text: 'Moyenne et quartile des taux: Pret Actuel'
                 },
 
                 
                 yAxis: {
                     title: {
-                        text: "Indices"
+                        text: "Taux"
                     },
                     max:10,
                     min:0
@@ -838,13 +873,13 @@
                     data: moy,
                     zIndex: 1,
                     marker: {
-                        lineColor: "#33CC66"
+                        lineColor: "#3300CC"
                     }
                 }, {
                     name: 'Quartile',
                     data: range,
                     type: 'arearange',
-                    lineWidth: 0,
+                    lineWidth: 1,
                     color: Highcharts.getOptions().colors[0],
                     fillOpacity: 0.3,
                     zIndex: 0
@@ -862,7 +897,102 @@
         }
 
         $scope.formatMoyRef = function (argument) {
-            // body...
+           var len = $scope.refinancing.initMortgage.moyDuration > $scope.refinancing.refMortgage.refTab.length ? $scope.refinancing.refMortgage.refTab.length : $scope.refinancing.refMortgage.moyDuration;
+           var start = 1;
+           var range = [];
+           var moy = [];
+           var rates = [];
+           var j=0;
+           //console.log($scope.refinancing.refMortgage.quart);
+           if ($scope.refinancing.refMortgage.type.localeCompare('fixe')!==0) {
+                for (var i = 0; i < 1; i++) {
+                    range[i] = null;
+                    moy[i] = null;
+                    rates[i] = $scope.refinancing.initMortgage.trueRate;
+                };
+                    for (var i = 0; i < $scope.refinancing.refMortgage.refInd.length; i++) {
+                        var deb = i==1 ? $scope.refinancing.refMortgage.variation.fixe : $scope.refinancing.refMortgage.variation.fixe+$scope.refinancing.refMortgage.variation.reval*(i-1);
+                        deb = i==0 ? 0 : deb;
+                        for (var k = deb;k <$scope.refinancing.refMortgage.duration; k++) {
+                            rates[k] = $scope.refinancing.refMortgage.refInd[i].rate;
+                            //range[k] = [$scope.refinancing.refMortgage.quart[i].q25.rate,$scope.refinancing.refMortgage.quart[i].q75.rate];
+                        };
+                    };
+                
+                    var s=1;
+                   for (var i = start; i < $scope.refinancing.refMortgage.duration; i++) {
+                       //range[i] = [$scope.refinancing.refMortgage.quart[0].rate,$scope.refinancing.refMortgage.quart[1].rate];
+                      // moy[i] = $scope.refinancing.refMortgage.moy.rate;
+                       moy[i] = $scope.refinancing.refMortgage.quart[s].moy.rate;
+                       range[i] = [$scope.refinancing.refMortgage.quart[s].q25.rate,$scope.refinancing.refMortgage.quart[s].q75.rate];
+                       s++;
+                       //rates[i] = $scope.refinancing.refMortgage.trueRate;
+                   };
+                   var s = start;
+                   /*for (var i = 0; i < $scope.refinancing.refMortgage.quart.length; i++) {
+                        var en = $scope.refinancing.refMortgage.quart[i].len < $scope.refinancing.refMortgage.duration ?  $scope.refinancing.refMortgage.quart[i].len : $scope.refinancing.refMortgage.duration;
+                       for (var m = 0; m <$scope.refinancing.refMortgage.quart[i].len; m++) {
+                            if (s < $scope.refinancing.refMortgage.duration) {
+                                range[s] = [$scope.refinancing.refMortgage.quart[i].q25.rate,$scope.refinancing.refMortgage.quart[i].q75.rate];
+                                s++;
+                            };
+                       };
+                   };*/
+            
+            }
+
+           var chart = {
+                chart: {
+                    zoomType: 'xy',
+                    renderTo: 'moyRefChart'
+
+                },
+                title: {
+                    text: 'Moyenne et quartil des taux: Rachat'
+                },
+
+                
+                yAxis: {
+                    title: {
+                        text: "Taux"
+                    },
+                    max:10,
+                    min:0
+                },
+
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+
+                legend: {
+                },
+
+                series: [{
+                    name: 'Moyenne',
+                    data: moy,
+                    zIndex: 1,
+                    marker: {
+                        lineColor: "#3300CC"
+                    }
+                }, {
+                    name: 'Quartile',
+                    data: range,
+                    type: 'arearange',
+                    lineWidth: 1,
+                    color: Highcharts.getOptions().colors[0],
+                    fillOpacity: 0.3,
+                    zIndex: 0
+                },{
+                    name: 'Taux',
+                    data: rates,
+                    type: 'spline',
+                    color:"#FF0000"
+                }]
+            }
+             $scope.idChart = 'moyRefChart';
+                
+            return chart;
         }
 
 
@@ -1057,6 +1187,7 @@
                 $scope.indiceRefChart = $scope.formatindiceRef();
                 $scope.indiceInitChart = $scope.formatindiceInit();
                 $scope.moyInitChart = $scope.formatMoyInit();
+                $scope.moyRefChart = $scope.formatMoyRef();
 
             }
 
